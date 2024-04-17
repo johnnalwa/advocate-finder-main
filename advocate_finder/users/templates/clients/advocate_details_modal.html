@@ -1,0 +1,20 @@
+{% extends 'advocates/base.html' %}
+{% block title %}Advocate details{% endblock %}
+
+{% block content %}
+
+
+<!-- Display advocate details in the modal body -->
+<h5>{{ advocate.user.first_name }}</h5>
+<p>
+    <strong>Specialization:</strong> {{ advocate.specialization }}<br>
+    <strong>Experience:</strong> {{ advocate.experience_years }} years<br>
+    <strong>Hourly Rate:</strong> KSH{{ advocate.hourly_rate }}<br>
+    {% if advocate.is_available %}
+        <strong>Availability:</strong> <span class="text-success">Available</span>
+    {% else %}
+        <strong>Availability:</strong> <span class="text-danger">Not Available</span>
+    {% endif %}
+</p>
+
+{% endblock %}

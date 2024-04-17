@@ -1,0 +1,117 @@
+{% extends 'clients/base.html' %}
+{% block title %}Advocate Profiles{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <form class="form-inline mb-3">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="searchButton">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            {% for advocate in advocates %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 bg-light text-dark">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ advocate.user.first_name }}</h5>
+                            <p class="card-text text-center">
+                                <strong>Specialization:</strong> {{ advocate.specialization }}<br>
+                                <strong>Experience:</strong> {{ advocate.experience_years }} years<br>
+                                <strong>Hourly Rate:</strong> KSH{{ advocate.hourly_rate }}<br>
+                                {% if advocate.is_available %}
+                                    <strong>Availability:</strong> <span class="text-success">Available</span>
+                                {% else %}
+                                    <strong>Availability:</strong> <span class="text-danger">Not Available</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-light">
+                            <div class="text-center">
+                                <div class="rating" data-advocate-id="{{ advocate.user.id }}">
+                                    {% for i in '12345' %}
+                                        <span class="star{% if forloop.counter > advocate.rating %} empty{% endif %}">&#9733;</span>
+                                    {% endfor %}
+                                </div>
+                                <a href="#" class="btn btn-primary btn-sm mr-2 view-profile" data-advocate-id="{{ advocate.user.id }}">View Profile</a>
+                                <a href="{% url 'book_appointment' advocate.user.id %}" class="btn btn-success btn-sm book-appointment" data-advocate-id="{{ advocate.user.id }}">Book Appointment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal fade" id="advocateModal" tabindex="-1" role="dialog" aria-labelledby="advocateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="advocateModalLabel">Advocate Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Advocate details will be displayed here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script>
+    // JavaScript code for displaying advocate details in a modal
+    $('.view-profile').click(function(event) {
+        event.preventDefault();
+        var advocateId = $(this).data('advocate-id');
+
+        // Fetch advocate details via AJAX
+        $.ajax({
+            url: '/get_advocate_details/' + advocateId + '/', // URL to fetch advocate details
+            method: 'GET',
+            success: function(data) {
+                // Populate modal body with advocate details
+                $('#advocateModal .modal-body').html(data);
+                // Show the modal
+                $('#advocateModal').modal('show');
+            },
+            error: function(err) {
+                console.error('Error fetching advocate details:', err);
+                // Handle error here
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Enable tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        
+        // Redirect to booking page when "Book Appointment" button is clicked
+        $('.book-appointment').click(function(event) {
+            event.preventDefault();
+            var bookingUrl = $(this).attr('href');
+            console.log('Redirecting to booking page: ' + bookingUrl);
+            window.location.href = bookingUrl; // Redirect to the booking page
+        });
+        
+        // Search functionality
+        $('#searchInput').keyup(function () {
+            var searchText = $(this).val().toLowerCase();
+            $('.card').each(function () {
+                var cardText = $(this).text().toLowerCase();
+                if (cardText.indexOf(searchText) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

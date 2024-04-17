@@ -1,0 +1,36 @@
+<!-- advocates/advocate_form.html -->
+{% extends 'advocates/base.html' %}
+{% block title %}Advocate Form{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Advocate Form</h2>
+                    </div>
+                    <div class="card-body">
+                        {% if success_message %}
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+                            <script>
+                                $(document).ready(function() {
+                                    Swal.fire({
+                                        title: 'Good job!',
+                                        text: 'Advocate details submitted successfully!',
+                                        icon: 'success'
+                                    });
+                                });
+                            </script>
+                        {% endif %}
+                        <form id="advocate-form" method="post" action="{% url 'advocate_form' %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

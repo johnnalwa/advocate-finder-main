@@ -1,0 +1,106 @@
+{% extends 'advocates/base.html' %}
+{% block title %}Advocate Form Success{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <script>
+                                    // Display toast alert
+                                    alert('{{ message }}');
+                                </script>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post" id="lawyerForm">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="name">Name:</label>
+                                    <input type="text" id="name" name="name" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="phone_number">Phone Number:</label>
+                                    <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="location">Location of operation:</label>
+                                    <input type="text" id="location" name="location" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="description">Description:</label>
+                                    <textarea id="description" name="description" class="form-control" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="rate">Appointments Rates per session:</label>
+                                    <input type="number" id="rate" name="rate" step="0.01" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Select Case Types:</label>
+                                    <div>
+                                        {% for case_type in case_types %}
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="case_type_{{ case_type.id }}" name="case_types" value="{{ case_type.id }}" class="form-check-input">
+                                                <label for="case_type_{{ case_type.id }}" class="form-check-label">{{ case_type.name }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and SweetAlert2 CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Prevent form resubmission on page reload
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        // Submit form handler
+        $('#lawyerForm').submit(function(e) {
+            e.preventDefault(); // Prevent default form submission
+            // Your form submission logic here
+            // For demonstration, I'm showing a SweetAlert2 message
+            Swal.fire({
+                title: 'Success!',
+                text: 'Profile Created successfully.',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // You can redirect or do any other action here after confirmation
+                    // For demonstration, I'm just reloading the page
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+{% endblock %}

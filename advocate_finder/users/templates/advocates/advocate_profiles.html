@@ -1,0 +1,29 @@
+<!-- advocate_profiles.html -->
+
+{% extends 'base.html' %}
+{% block title %}Advocate Profiles{% endblock %}
+
+{% block content %}
+    <h1 class="mt-4 mb-4">Advocate Profiles</h1>
+    <ul class="list-group">
+        {% for advocate in advocates %}
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>{{ advocate.user.username }}</strong>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="badge badge-primary">{{ advocate.specialization }}</span>
+                        <span class="badge badge-secondary">{{ advocate.experience_years }} years experience</span>
+                        <span class="badge badge-success">Hourly Rate: ${{ advocate.hourly_rate }}</span>
+                        {% if advocate.is_available %}
+                            <span class="badge badge-info">Available</span>
+                        {% else %}
+                            <span class="badge badge-warning">Not Available</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

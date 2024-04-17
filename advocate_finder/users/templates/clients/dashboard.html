@@ -1,0 +1,148 @@
+{% extends 'clients/base.html' %}
+{% load static %} 
+
+{% block title %}Client Dashboard{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+            </span> Client Dashboard
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Total Payments Made <i class="mdi mdi-cash-multiple mdi-24px float-right"></i></h4>
+                    <h2 class="mb-5">KES 15,000</h2>
+                    <h6 class="card-text">View payment history</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Total Active Cases <i class="mdi mdi-briefcase mdi-24px float-right"></i></h4>
+                    <h2 class="mb-5">4</h2>
+                    <h6 class="card-text">View case details</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-warning card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Total Pending Cases <i class="mdi mdi-clock-fast mdi-24px float-right"></i></h4>
+                    <h2 class="mb-5">2</h2>
+                    <h6 class="card-text">View pending cases</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Recent Payments</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Payment ID</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PM-12345</td>
+                                    <td>KES 5000</td>
+                                    <td>Dec 5, 2023</td>
+                                    <td><label class="badge badge-gradient-success">Success</label></td>
+                                </tr>
+                                <!-- Add more rows for recent payments -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Message Icon -->
+<div id="messageIcon" class="text-primary">
+  <i class="fas fa-comment"></i>
+</div>
+
+<!-- Message Form Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="messageModalLabel">Send Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea class="form-control" id="message" rows="3" required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="sendMessageBtn">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function(){
+    // Show message form modal when message icon is clicked
+    $('#messageIcon').click(function(){
+      $('#messageModal').modal('show');
+    });
+
+    // Handle send message button click
+    $('#sendMessageBtn').click(function(){
+      var name = $('#name').val();
+      var message = $('#message').val();
+      
+      // Here you can send the message data to your backend or do any other necessary processing
+      console.log('Name: ' + name + ', Message: ' + message);
+      
+      // Clear form fields
+      $('#name').val('');
+      $('#message').val('');
+
+      // Close the modal after submission
+      $('#messageModal').modal('hide');
+    });
+  });
+</script>
+{% endblock %}

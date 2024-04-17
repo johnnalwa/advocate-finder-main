@@ -1,0 +1,18 @@
+{% extends 'advocates/base.html' %}
+{% block title %}Advocate Form Success{% endblock %}
+
+{% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(document).ready(function() {
+            Swal.fire({
+                title: 'Good job!',
+                text: 'Advocate details submitted successfully!',
+                icon: 'success'
+            }).then(function() {
+                // Redirect or perform any other action after user acknowledges the success message
+                window.location.href = "{% url 'advocate_form' %}";
+            });
+        });
+    </script>
+{% endblock %}
